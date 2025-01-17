@@ -1,19 +1,18 @@
 import os
 import shutil
 
-directory = "C:/Users/<current_user>/OneDrive/Desktop/Test-Folder-Organizer"
-source_path = os.listdir(directory)
-list_folder = ["PDF", "WORD", "VIDEO", "AUDIO", "APP", "EXCEL", "ARCHIVE", "POWERPOINT", "IMAGES", "WEB"]
-destination = "C:/Users/<current_user>/OneDrive/Desktop/Test-Folder-Organizer/"
+home_directory = os.path.expanduser('~')
+directory = os.path.join(home_directory, "OneDrive/Desktop/Test-Folder-Organizer")
+destination = directory
+
 
 file_extensions = {
     "jpg": "IMAGES",
-    "JPG": "IMAGES",
     "png": "IMAGES",
     "ico": "IMAGES",
     "gif": "IMAGES",
     "svg": "IMAGES",
-    "sql": "sql",
+    "sql": "SQL",
     "exe": "APP",
     "msi": "APP",
     "pdf": "PDF",
@@ -24,10 +23,10 @@ file_extensions = {
     "gz": "ARCHIVE",
     "tar": "ARCHIVE",
     "docx": "WORD",
-    "torrent": "torrent",
+    "torrent": "TORRENT",
     "txt": "TEXT",
-    "ipynb": "python",
-    "py": "python",
+    "ipynb": "PYTHON",
+    "py": "PYTHON",
     "pptx": "POWERPOINT",
     "ppt": "POWERPOINT",
     "mp3": "AUDIO",
@@ -36,27 +35,31 @@ file_extensions = {
     "m3u8": "VIDEO",
     "webm": "VIDEO",
     "ts": "VIDEO",
-    "json": "json",
+    "json": "JSON",
     "css": "WEB",
     "js": "WEB",
     "html": "WEB",
-    "apk": "apk",
-    "sqlite3": "sqlite3",
+    "apk": "JSON",
+    "sqlite3": "SQL",
 }
 
-for name in list_folder:
-    path_new = os.path.join(directory, name)
-    try:
-        os.makedirs(path_new)
-        print(f"Successfully created {name} folder!")
-    except OSError:
-        print(f"Failed to create {name} folder!")
+file_extensions = {ext.lower(): category for ext, category in file_extensions.items()}
 
+required_folders = set(file_extensions.values())
+for folder in required_folders:
+    os.makedirs(os.path.join(directory, folder))
+    print(f"Folder {folder} is ready!")
 
-for extension in file_extensions.keys():
-    for file in source_path:
-        if file.endswith(extension):
-            print(f"{file} matches to {extension}")
-            if file_extensions[extension] in list_folder:
-                shutil.move(os.path.join(directory, file), (os.path.join(destination+file_extensions[extension], file)))
-                print("Moving file success!")
+source_path = os.listdir(directory)
+for file in source_path:
+    file_lower = file.lower()
+    file_extension = file_lower.split('.')[-1]
+    if file_extension in file_extensions:
+        target_folder = file_extensions[file_extension]
+        target_path = os.path.join(destination, target_folder)
+        try:
+            shutil.move(os.path.join(directory, file), os.path.join(target_path, file))
+            print(f"Moved {file} to {target_folder} successfully")
+        except Exception as e:
+            print(f"Failed to move {file}: {e}")
+
