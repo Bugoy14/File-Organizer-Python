@@ -5,15 +5,12 @@ home_directory = os.path.expanduser('~')
 directory = os.path.join(home_directory, "OneDrive/Desktop/Python Project/Test Folder")
 destination = directory
 
-
 file_extensions = {
     "jpg": "IMAGES",
     "png": "IMAGES",
     "ico": "IMAGES",
     "gif": "IMAGES",
     "svg": "IMAGES",
-    "exe": "APP",
-    "msi": "APP",
     "pdf": "PDF",
     "xlsx": "EXCEL",
     "csv": "EXCEL",
@@ -22,7 +19,6 @@ file_extensions = {
     "gz": "ARCHIVE",
     "tar": "ARCHIVE",
     "docx": "WORD",
-    "torrent": "TORRENT",
     "txt": "TEXT",
     "ipynb": "PYTHON",
     "py": "PYTHON",
@@ -35,8 +31,11 @@ file_extensions = {
     "webm": "VIDEO",
     "ts": "VIDEO",
     "css": "WEB",
-    "js": "WEB",
     "html": "WEB",
+    # "js": "WEB",
+    # "exe": "APP",
+    # "msi": "APP",
+    # "torrent": "TORRENT"
 }
 
 file_extensions = {ext.lower(): category for ext, category in file_extensions.items()}
